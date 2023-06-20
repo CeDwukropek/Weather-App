@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500&display=swap');
+
+* {
+    font-family: 'Rubik', sans-serif;
+    margin-top: 0;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    color: #fff;
+}
+
+.background {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-image: url(images/wallpaperflare-cropped.jpg);
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    box-sizing: border-box;
+    padding: 4rem 6rem 8rem;
+}
+
+.background h3 {
+    font-weight: 300;
+}
+
+.background .weather {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.background .weather p{
+    font-size: 8rem;
+    margin-bottom: 0;
+}
+
+.background .weather .grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    column-gap: 20px;
+    align-items: center;
+    text-align: center;
+}
+
+.background .weather .grid-container p {
+    font-size: 4rem;
+}
+
+.background .weather .grid-container img {
+    max-width: 70px;
+}
+
+.wrapper {
+    position: fixed;
+    right: 0;
+    top: 0;
+    min-width: 35%;
+    min-height: 100%;
+    background-color: rgba(0, 0, 0, .2);
+    backdrop-filter: blur(25px) brightness(150%);
+    box-sizing: border-box;
+}
+
+.wrapper .gray {
+    color: rgba(255, 255, 255, .5);
+}
+
+.wrapper p {
+    font-size: 1.1rem;
+    font-weight: lighter;
+}
+
+.border {
+    border-bottom: 1px solid rgba(255, 255, 255, .5);
+}
+
+.wrapper-head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-left: 5rem;
+}
+
+.wrapper-head p{
+    padding-top: 2rem;
+    margin-bottom: 0;
+    padding-bottom: 1rem;
+    width: 70%;
+}
+
+.wrapper-head img {
+    aspect-ratio: 1/1;
+    height: 100%;
+    background-color: #e07033;
+    padding: 2rem;
+}
+
+.wrapper-body {
+    padding: 6rem 5rem;
+    padding-top: 0;
+}
+
+.wrapper-body ul {
+    display: flex;
+    gap: 3rem;
+    flex-direction: column;
+    list-style: none;
+    padding: 3.5rem 0;
+    margin: 0;
+}
+
+.wrapper-body li {
+    font-size: 1.1rem;
+    font-weight: lighter;
+}
+
+.wrapper-body p {
+    margin-top: 3.5rem;
+    color: #fff;
+    font-weight: 400;
+}
+
+.wrapper-body .details li{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
