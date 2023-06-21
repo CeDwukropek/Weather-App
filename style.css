@@ -50,11 +50,14 @@ body {
 }
 
 .background .weather .grid-container p {
-    font-size: 4rem;
+    font-size: 3.7rem;
 }
 
 .background .weather .grid-container img {
     max-width: 70px;
+}
+.background .weather .grid-container span {
+    font-size: 1.2rem;
 }
 
 .wrapper {
@@ -67,9 +70,17 @@ body {
     backdrop-filter: blur(25px) brightness(150%);
     box-sizing: border-box;
 }
+li {
+    cursor: pointer;
+}
 
-.wrapper .gray {
+.wrapper .gray li{
     color: rgba(255, 255, 255, .5);
+    transform: 350ms;
+}
+
+.wrapper .gray li:hover {
+    color: #fff;
 }
 
 .wrapper p {
@@ -120,6 +131,7 @@ body {
 .wrapper-body li {
     font-size: 1.1rem;
     font-weight: lighter;
+    transition: 500ms;
 }
 
 .wrapper-body p {
