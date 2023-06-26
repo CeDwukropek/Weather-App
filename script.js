@@ -1,4 +1,4 @@
-import { key } from './config.js'
+import { openWeatherKey } from './config.js'
 
 class App {
     //outputs
@@ -146,7 +146,8 @@ class App {
     }
 
     async getWeatherData() {
-        const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.city}&appid=${key}&units=metric`)
+        const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.city}&appid=${openWeatherKey}&units=metric`)
+
         const output = await res.json()
         console.log(output)
     }
