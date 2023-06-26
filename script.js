@@ -1,4 +1,8 @@
-import { openWeatherKey } from './config.js'
+import { openWeatherKey, geoApiKey } from './config.js'
+
+
+
+
 
 class App {
     //outputs
@@ -7,6 +11,9 @@ class App {
     static outputClock = document.getElementById('clock')
     static outputCity = document.getElementById('city')
     static outputDegrees = document.getElementById('degrees')
+    static outputClouds = document.getElementById('clouds')
+    static outputHumidity = document.getElementById('humidity')
+    static outputWind = document.getElementById('wind')
 
     constructor(dev = 0, lang = 'en', city = 'Kraków', date = new Date()) {
         // date varibles
@@ -21,12 +28,13 @@ class App {
         this.daysInMonth = this.date.getDate() // days in current month
 
         // main variables
+        this.dev = dev
         this.lang = lang
         this.city = city
 
         // main methods
         this.updateClock = function() {
-            if(dev){
+            if(this.dev){
                 console.table({
                     'hours': this.hours,
                     'minutes': this.minutes,
@@ -38,7 +46,7 @@ class App {
         }
 
         this.updateDate = function() {
-            if(dev){
+            if(this.dev){
                 console.table({
                     'day number': this.dayNumber,
                     'day of the month': this.dayOfTheMonth,
@@ -102,13 +110,7 @@ class App {
             App.outputDate.innerHTML = this.dayOfTheMonth + ' ' + months[this.lang][this.monthNumber] + " '" + String(this.year).substring(2, 4)
         }
 
-        this.updateCity = function() {
-            App.outputCity.innerHTML = this.city
-        }
-
         this.updateClock()
-        this.updateDate()
-        this.updateCity()
     }
 
     updateMinutes() {
@@ -145,14 +147,67 @@ class App {
         this.dayNumber = this.dayNumber % 12
     }
 
-    async getWeatherData() {
-        const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.city}&appid=${openWeatherKey}&units=metric`)
+    updateCity(city, lang) {
+        this.city = city
+        App.outputCity.innerHTML = this.city
+        this.updateLang(lang)
+    }
 
+    updateLang(lang) {
+        this.lang = lang
+        this.updateDate()
+    }
+
+    updateDegress(deg) {
+        App.outputDegrees.innerHTML = `${deg}&deg;`
+    }
+
+    updateClouds(val) {
+        App.outputClouds.innerHTML = `${val}`
+    }
+
+    updateHumidity(val) {
+        App.outputHumidity.innerHTML = `${val}%`
+    }
+
+    updateWind(val) {
+        App.outputWind.innerHTML = `${val}km/h`
+    }
+
+    async getWeatherData(city = this.city) {
+        const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${openWeatherKey}&units=metric`)
         const output = await res.json()
-        console.log(output)
+        if(this.dev){
+            console.log(output)
+            console.log('temp:', Math.ceil(output.main.temp))
+            console.log('humidity:', output.main.humidity)
+        }
+        this.updateDegress(Math.ceil(output.main.temp))
+        this.updateClouds(output.clouds.all)
+        this.updateHumidity(output.main.humidity)
+        this.updateWind(output.wind.speed)
+    }
+
+    async getUsersData() {
+        const data = await fetch(`https://api.geoapify.com/v1/ipinfo?apiKey=${geoApiKey}`)
+        .then(response => response.json())
+        .then(data => {
+            if(this.dev)
+            {
+                console.table(data);
+                console.log('lang :>> ', data.country.languages[0]['iso_code']);
+            }
+            this.updateCity(data.city.name, data.country.languages[0]['iso_code'])
+            this.getWeatherData()
+        })
+        .catch(error => {
+            console.log('error :>> ', error);
+        })
     }
     
-    start() {  
+    start() {
+        this.getUsersData()
+
         setTimeout(() => {   
             this.seconds = 0
             this.updateMinutes()
@@ -163,6 +218,6 @@ class App {
     }
 }
 
-const app = new App(1, 'en')
+const app = new App(1)
 
 app.start()
