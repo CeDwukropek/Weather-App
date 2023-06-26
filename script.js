@@ -103,7 +103,6 @@ class App {
         }
 
         this.updateCity = function() {
-            this.city = 
             App.outputCity.innerHTML = this.city
         }
 
@@ -148,6 +147,7 @@ class App {
 
     async getWeatherData() {
         const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.city}&appid=${openWeatherKey}&units=metric`)
+
         const output = await res.json()
         console.log(output)
     }
