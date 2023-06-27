@@ -35,11 +35,11 @@ class App {
         // main methods
         this.updateClock = function() {
             if(this.dev){
-                console.table({
-                    'hours': this.hours,
-                    'minutes': this.minutes,
-                    'seconds': this.seconds
-                })
+                console.groupCollapsed('Time Data:')
+                    console.log('hours', this.hours);
+                    console.log('minutes', this.minutes);
+                    console.log('seconds', this.seconds);
+                console.groupEnd('Date Data:')
             }
 
             App.outputClock.innerHTML = App.outputClock.innerHTML = this.hours + ':' + this.minutes
@@ -47,12 +47,12 @@ class App {
 
         this.updateDate = function() {
             if(this.dev){
-                console.table({
-                    'day number': this.dayNumber,
-                    'day of the month': this.dayOfTheMonth,
-                    'month number': this.monthNumber,
-                    'year': this.year
-                });
+                console.groupCollapsed('Date Data:')
+                    console.log('day number', this.dayNumber);
+                    console.log('day of the month', this.dayOfTheMonth);
+                    console.log('month number', this.monthNumber);
+                    console.log('year', this.year);
+                console.groupEnd('Date Data:')
             }
             const days = {
                 'en': [
@@ -163,7 +163,7 @@ class App {
     }
 
     updateClouds(val) {
-        App.outputClouds.innerHTML = `${val}`
+        App.outputClouds.innerHTML = `${val}%`
     }
 
     updateHumidity(val) {
@@ -178,9 +178,50 @@ class App {
         const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${openWeatherKey}&units=metric`)
         const output = await res.json()
         if(this.dev){
-            console.log(output)
-            console.log('temp:', Math.ceil(output.main.temp))
-            console.log('humidity:', output.main.humidity)
+            console.groupCollapsed('Weather Data:')
+                console.log('base:', output.base)
+                console.group('clouds')
+                    console.log('%call:', 'background-color: darkgreen', output.clouds.all)
+                console.groupEnd('clouds')
+                console.log('cod:', output.cod);
+                console.groupCollapsed('coord')
+                    console.log('lat:', output.coord.lat)
+                    console.log('lon:', output.coord.lon)
+                console.groupEnd('coord')
+                console.log('dt:', output.dt);
+                console.log('id:', output.id);
+                console.group('main')
+                    console.log('feels_like:', output.main.feels_like)
+                    console.log('grnd_level:', output.main.grnd_level)
+                    console.log('%chumidity:','background-color: darkgreen', output.main.humidity)
+                    console.log('pressure:', output.main.pressure)
+                    console.log('sea_level:', output.main.sea_level)
+                    console.log('%ctemp:', 'background-color: darkgreen', output.main.temp)
+                    console.log('temp_max:', output.main.temp_max)
+                    console.log('temp_min:', output.main.temp_min)
+                    console.groupEnd('main')
+                console.log('%cname:', 'background-color: darkgreen', output.name)
+                console.groupCollapsed('sys')
+                    console.log('country:', output.sys.country)
+                    console.log('id:', output.sys.id)
+                    console.log('sunrise:', output.sys.sunrise)
+                    console.log('sunset:', output.sys.sunset)
+                    console.log('type:', output.sys.type)
+                console.groupEnd('sys')
+                console.log('timezone', output.timezone)
+                console.log('visibility', output.visibility)
+                console.groupCollapsed('weather')
+                    console.log('description:',output.weather[0].description);
+                    console.log('icon:',output.weather[0].icon);
+                    console.log('id:',output.weather[0].id);
+                    console.log('main:',output.weather[0].main);
+                console.groupEnd('weather')
+                console.group('wind')
+                    console.log('deg:', output.wind.deg)
+                    console.log('gust:', output.wind.gust)
+                    console.log('%cspeed:', 'background-color: darkgreen', output.wind.speed)
+                console.groupEnd('wind')
+            console.groupEnd('Weather Data:')
         }
         this.updateDegress(Math.ceil(output.main.temp))
         this.updateClouds(output.clouds.all)
@@ -194,8 +235,9 @@ class App {
         .then(data => {
             if(this.dev)
             {
+                console.groupCollapsed('User Data')
                 console.table(data);
-                console.log('lang :>> ', data.country.languages[0]['iso_code']);
+                console.groupEnd('User Data')
             }
             this.updateCity(data.city.name, data.country.languages[0]['iso_code'])
             this.getWeatherData()
