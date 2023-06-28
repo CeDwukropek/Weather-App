@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test</title>
+</head>
+<body>
+</body>
+<script>
+    const d = new Date();
+    const localTime = d.getTime();
+    const localOffset = d.getTimezoneOffset() * 60000;
+    
+    console.log('localTime :>> ', localTime);
+    console.log('localOffset :>> ', localOffset);
+
+    const utc = localTime + localOffset;
+    const offset = 4; // UTC of Dubai is +04.00
+    const dubai = utc + (3600000 * offset);
+
+    console.log('dubai :>> ', dubai);
+    
+    const dubaiTimeNow = new Date(dubai).toLocaleString();
+    
+    console.log('dubaiTimeNow :>> ', dubaiTimeNow);
+</script>
+</html>

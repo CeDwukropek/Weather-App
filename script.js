@@ -1,9 +1,5 @@
 import { openWeatherKey, geoApiKey } from './config.js'
 
-
-
-
-
 class App {
     //outputs
     static outputDay = document.getElementById('day')
@@ -147,10 +143,9 @@ class App {
         this.dayNumber = this.dayNumber % 12
     }
 
-    updateCity(city, lang) {
+    updateCity(city) {
         this.city = city
         App.outputCity.innerHTML = this.city
-        this.updateLang(lang)
     }
 
     updateLang(lang) {
@@ -158,8 +153,8 @@ class App {
         this.updateDate()
     }
 
-    updateDegress(deg) {
-        App.outputDegrees.innerHTML = `${deg}&deg;`
+    updateDegress(val) {
+        App.outputDegrees.innerHTML = `${val}&deg;`
     }
 
     updateClouds(val) {
@@ -172,6 +167,14 @@ class App {
 
     updateWind(val) {
         App.outputWind.innerHTML = `${val}km/h`
+    }
+
+    updateTime(){
+
+    }
+
+    calcTimeChange() {
+        
     }
 
     async getWeatherData(city = this.city) {
@@ -229,7 +232,7 @@ class App {
         this.updateWind(output.wind.speed)
     }
 
-    async getUsersData() {
+    async getUserData() {
         const data = await fetch(`https://api.geoapify.com/v1/ipinfo?apiKey=${geoApiKey}`)
         .then(response => response.json())
         .then(data => {
@@ -239,7 +242,8 @@ class App {
                 console.table(data);
                 console.groupEnd('User Data')
             }
-            this.updateCity(data.city.name, data.country.languages[0]['iso_code'])
+            this.updateCity(data.city.name)
+            this.updateLang(data.country.languages[0]['iso_code'])
             this.getWeatherData()
         })
         .catch(error => {
@@ -248,7 +252,7 @@ class App {
     }
     
     start() {
-        this.getUsersData()
+        this.getUserData()
 
         setTimeout(() => {   
             this.seconds = 0
@@ -263,3 +267,13 @@ class App {
 const app = new App(1)
 
 app.start()
+
+const cities = document.getElementById('cities')
+const citiesNames = cities.querySelectorAll('li')
+
+citiesNames.forEach(element => {
+    element.addEventListener('click', e => {
+        app.updateCity(e.target.innerHTML)
+        app.getWeatherData()
+    })
+});
